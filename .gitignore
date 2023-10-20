@@ -1,0 +1,8 @@
+#Python garbage
+*.pyc   
+__pycache__/
+
+*.pkl
+
+*.txt
+
