@@ -3,7 +3,7 @@ from backend import bot
 import sys
 
 
-printLogo('RED')
+printLogo('YELLOW')
 
 if len(sys.argv) >= 2:
     if sys.argv[1].upper() ==  "D":
@@ -37,12 +37,12 @@ if len(sys.argv) >= 2:
             elif option == '10':
                 sys.exit()      
 
-printLogo("red")
+printLogo("YELLOW")
 
 myBot = bot()
 myBot.login()
 
-printLogo("red")
+printLogo("YELLOW")
 
 while (option := options()):
     print()

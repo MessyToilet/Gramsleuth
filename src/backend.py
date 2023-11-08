@@ -225,12 +225,14 @@ class bot():
             pass
 
     def get_your_followers(self):
+        '''
         try:
             systemBoarder(sys='SYSTEM', msg='Loading followers...')
             self.driver.get(f"https://www.instagram.com/{self.username}/followers/")
             
+
             systemBoarder(sys='SYSTEM', msg='Waiting...')
-            wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "//button[text()='Remove']")))
+            #wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html[1]/body[1]/div[6]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/button[1]/div[1]/div[1]")))     
             
             systemBoarder(sys='SYSTEM', msg='Scrolling...')
             numScrolls = 20
@@ -241,7 +243,37 @@ class bot():
             #self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") #problem here
         except:
             systemBoarder(sys='ERROR', msg='Could not find')
-          
+        '''
+        try:#black magic
+            #self.driver.find_element(By.XPATH("//a[contains(@href,'/{}')]").format(self.username)).click()
+            systemBoarder(sys='SYSTEM', msg='Loading followers...')
+            self.driver.get(f"https://www.instagram.com/{self.username}/followers/")
+            #systemBoarder(sys='SYSTEM', msg='Waiting...')
+            #wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "//a[contains)@href,'/following')]"))).click()
+            time.sleep(2)
+            systemBoarder(sys='SYSTEM', msg='Waiting...')
+            scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))     
+            #scroll_box = self.driver.find_element(By.XPATH("/html/body/div[7]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[4]"))
+            time.sleep(5)
+            systemBoarder(sys='SYSTEM', msg='Scroll box found!')
+            last_ht, ht = 0, 1
+            while last_ht != ht:
+                systemBoarder(sys='SYSTEM', msg='Scrolling...')
+                last_ht = ht
+                time.sleep(2)
+                ht = self.driver.execute_script("""
+                                                arguments[0].scrollTo(0, arguments[0].scrollHeight);
+                                                return arguments[0].scrollHeight; """, scroll_box)
+            links = scroll_box.find_elements(By.TAG_NAME('a'))
+            time.sleep(2)
+            names = [name.text for name in links if name.text != '']
+            self.driver.find_element(By.XPATH("/html/body/div[7]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/button")).click()
+
+            IGuserName = "\n".join(names)
+            print(IGuserName)
+
+        except:
+            print("error")
 
     def get_your_following(self):
         return

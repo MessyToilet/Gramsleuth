@@ -27,13 +27,13 @@ def printLogo(color:str = 'white'):
 
     text_color = getattr(Fore, color.upper())
     logo = f"""         
-        {text_color} ██████╗ ██████╗  █████╗ ███╗   ███╗███████╗██╗     ███████╗██╗   ██╗████████╗██╗  ██╗   ██████╗ {Style.RESET_ALL}
-        {text_color}██╔════╝ ██╔══██╗██╔══██╗████╗ ████║██╔════╝██║     ██╔════╝██║   ██║╚══██╔══╝██║  ██║   ╚════██╗{Style.RESET_ALL}
-        {text_color}██║  ███╗██████╔╝███████║██╔████╔██║███████╗██║     █████╗  ██║   ██║   ██║   ███████║    █████╔╝{Style.RESET_ALL}
-        {text_color}██║   ██║██╔══██╗██╔══██║██║╚██╔╝██║╚════██║██║     ██╔══╝  ██║   ██║   ██║   ██╔══██║   ██╔═══╝ {Style.RESET_ALL}
-        {text_color}╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║███████║███████╗███████╗╚██████╔╝   ██║   ██║  ██║   ███████╗{Style.RESET_ALL}
-        {text_color} ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝   ╚══════╝{Style.RESET_ALL}
-        {text_color}By: MessyToilet x Raeeceip{Style.RESET_ALL}""" 
+        {text_color} ██████╗ ██████╗  █████╗ ███╗   ███╗███████╗██╗     ███████╗██╗   ██╗████████╗██╗  ██╗{Style.RESET_ALL}
+        {text_color}██╔════╝ ██╔══██╗██╔══██╗████╗ ████║██╔════╝██║     ██╔════╝██║   ██║╚══██╔══╝██║  ██║{Style.RESET_ALL}
+        {text_color}██║  ███╗██████╔╝███████║██╔████╔██║███████╗██║     █████╗  ██║   ██║   ██║   ███████║{Style.RESET_ALL}
+        {text_color}██║   ██║██╔══██╗██╔══██║██║╚██╔╝██║╚════██║██║     ██╔══╝  ██║   ██║   ██║   ██╔══██║{Style.RESET_ALL}
+        {text_color}╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║███████║███████╗███████╗╚██████╔╝   ██║   ██║  ██║{Style.RESET_ALL}
+        {text_color} ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝{Style.RESET_ALL}
+        {text_color}By: MessyToilet{Style.RESET_ALL}""" 
                                                                                      
     terminal_size = shutil.get_terminal_size()
     lines = logo.split('\n')
