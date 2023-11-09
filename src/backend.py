@@ -211,72 +211,139 @@ class bot():
         except:
             systemBoarder(sys='error', msg='Could not get image url')
 
+        try:
+            #self.get_your_followers()
+            #self.get_your_following()
+
+            with open('..\\reasources\\data\\user_followers', 'r') as f1:
+                followers = set(f1.read().splitlines())
+
+            with open('..\\reasources\\data\\user_following', 'r') as f2:
+                following = set(f2.read().splitlines()) 
+
+            not_following_user_back = following - followers
+            user_not_following_back = followers - following
+
+            systemBoarder(sys='system', msg='Calculating differences')
+
+            with open('..\\reasources\\data\\not_following_user_back', 'w') as file:
+                for item in not_following_user_back:
+                    file.write(item + '\n')
+
+            with open('..\\reasources\\data\\user_not_following_back', 'w') as file:
+                for item in user_not_following_back:
+                    file.write(item + '\n')
+            
+        except:
+            systemBoarder(sys='error', msg='Problem loading followers or following')
 
         try:
             print(f'\n\n\t Username     Posts    Flwrs    Flwng')
             print(f'\n\t{self.username}\t{postCount}\t{followerCount}\t{followingCount}')
             print(f'Name\t{name}')
             print(f'Bio', end='')
-            for line in bio:
-                print(f'\t{line}')
+            if len(bio) > 0:
+                for line in bio:
+                    print(f'\t{line}')
+            else:
+                print("")
+
+        except:
+            systemBoarder(sys='error', msg='Error Printing...')
+        
+        try:
             print(f'\nProfile pic url')
             print(f'\n{imageUrl}')
         except:
-            pass
+            systemBoarder(sys='error', msg='Error Printing...')
+        
+        try:
+            print(f'\n\tNot Following User Back\t\t\tUser Not Following Back')
+            print(f'\t{len(not_following_user_back)}\t\t\t{len(user_not_following_back)}')
+
+        except:
+            systemBoarder(sys='error', msg='Error Printing...')
+
+
 
     def get_your_followers(self):
-        '''
-        try:
+        try:#black magic
             systemBoarder(sys='SYSTEM', msg='Loading followers...')
-            self.driver.get(f"https://www.instagram.com/{self.username}/followers/")
-            
+            self.driver.get(f"https://www.instagram.com/{self.username}/followers/")    #load followers pop up
 
             systemBoarder(sys='SYSTEM', msg='Waiting...')
-            #wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html[1]/body[1]/div[6]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/button[1]/div[1]/div[1]")))     
-            
-            systemBoarder(sys='SYSTEM', msg='Scrolling...')
-            numScrolls = 20
-            for _ in range(numScrolls):     #Not in frame!!!
-                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                
-            
-            #self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") #problem here
-        except:
-            systemBoarder(sys='ERROR', msg='Could not find')
-        '''
-        try:#black magic
-            #self.driver.find_element(By.XPATH("//a[contains(@href,'/{}')]").format(self.username)).click()
-            systemBoarder(sys='SYSTEM', msg='Loading followers...')
-            self.driver.get(f"https://www.instagram.com/{self.username}/followers/")
-            #systemBoarder(sys='SYSTEM', msg='Waiting...')
-            #wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "//a[contains)@href,'/following')]"))).click()
-            time.sleep(2)
-            systemBoarder(sys='SYSTEM', msg='Waiting...')
-            scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))     
-            #scroll_box = self.driver.find_element(By.XPATH("/html/body/div[7]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[4]"))
-            time.sleep(5)
+            #scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))    #find the scroll bar
+            time.sleep(10)
+            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
             systemBoarder(sys='SYSTEM', msg='Scroll box found!')
             last_ht, ht = 0, 1
             while last_ht != ht:
                 systemBoarder(sys='SYSTEM', msg='Scrolling...')
                 last_ht = ht
-                time.sleep(2)
+                time.sleep(5)
                 ht = self.driver.execute_script("""
                                                 arguments[0].scrollTo(0, arguments[0].scrollHeight);
                                                 return arguments[0].scrollHeight; """, scroll_box)
-            links = scroll_box.find_elements(By.TAG_NAME('a'))
+                
+            systemBoarder(sys='SYSTEM', msg='Collection Completed!')
+            
+            links = scroll_box.find_elements(By.TAG_NAME, 'a')
             time.sleep(2)
+            #print(links)
+            systemBoarder(sys='SYSTEM', msg='Parsing...')
             names = [name.text for name in links if name.text != '']
-            self.driver.find_element(By.XPATH("/html/body/div[7]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/button")).click()
+            systemBoarder(sys='SYSTEM', msg='Closing pop up') 
+            self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div.x1qjc9v5.x78zum5.xdt5ytf > div > div._ac7b._ac7d > div > button").click()
 
+            systemBoarder(sys='SYSTEM', msg='Black Magic Finished!') 
             IGuserName = "\n".join(names)
-            print(IGuserName)
+            #print(IGuserName)
+
+            with open("..\\reasources\\data\\user_followers", 'w') as file:
+                for name in names:
+                    file.write(name + "\n")
 
         except:
             print("error")
 
+
     def get_your_following(self):
-        return
+        systemBoarder(sys='SYSTEM', msg='Loading followers...')
+        self.driver.get(f"https://www.instagram.com/{self.username}/following/")    #load followers pop up
+
+        systemBoarder(sys='SYSTEM', msg='Waiting...')
+        #scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))    #find the scroll bar
+        time.sleep(10)
+        scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[4]")
+        systemBoarder(sys='SYSTEM', msg='Scroll box found!')
+        last_ht, ht = 0, 1
+        while last_ht != ht:
+            systemBoarder(sys='SYSTEM', msg='Scrolling...')
+            last_ht = ht
+            time.sleep(5)
+            ht = self.driver.execute_script("""
+                                            arguments[0].scrollTo(0, arguments[0].scrollHeight);
+                                            return arguments[0].scrollHeight; """, scroll_box)
+            
+        systemBoarder(sys='SYSTEM', msg='Collection Completed!')
+        
+        links = scroll_box.find_elements(By.TAG_NAME, 'a')
+        time.sleep(2)
+        #print(links)
+        systemBoarder(sys='SYSTEM', msg='Parsing...')
+        names = [name.text for name in links if name.text != '']
+        systemBoarder(sys='SYSTEM', msg='Closing pop up') 
+        self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div.x1qjc9v5.x78zum5.xdt5ytf > div > div._ac7b._ac7d > div > button").click()
+
+        systemBoarder(sys='SYSTEM', msg='Black Magic Finished!') 
+        IGuserName = "\n".join(names)
+        #print(IGuserName)
+
+        with open("..\\reasources\\data\\user_following", 'w') as file:
+                for name in names:
+                    file.write(name + "\n")
+        
+    
     
 ### TARGET ACTIONS ###  
 
