@@ -14,6 +14,7 @@ from frontend import systemBoarder
 import pickle as pk     #cookie files
 import time
 import sys  
+import os
 
 class bot():
     def __init__(self) -> None: 
@@ -172,23 +173,18 @@ class bot():
         try:
             systemBoarder(sys='SYSTEM', msg='Collecting post count...')
             postCount = self.driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > section:nth-child(1) > main:nth-child(1) > div:nth-child(1) > header:nth-child(1) > section:nth-child(2) > ul:nth-child(3) > li:nth-child(1) > span:nth-child(1) > span:nth-child(1)").text
-            #print(f'Num Posts: {postCount}') #error here
         except:
             systemBoarder(sys="error", msg="Could not find post count")
 
         try:
             systemBoarder(sys='SYSTEM', msg='Collecting follower count...')
             followerCount = self.driver.find_element(By.XPATH, "/html[1]/body[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/section[1]/main[1]/div[1]/header[1]/section[1]/ul[1]/li[2]/a[1]/span[1]/span[1]").text
-            #followerCount = wait(self.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#mount_0_0_0l > div > div > div.x9f619.x1n2onr6.x1ja2u2z > div > div > div > div.x78zum5.xdt5ytf.x1t2pt76.x1n2onr6.x1ja2u2z.x10cihs4 > div.x9f619.xvbhtw8.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x1uhb9sk.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.x1q0g3np.xqjyukv.x1qjc9v5.x1oa3qoh.x1qughib > div.x1gryazu.xh8yej3.x10o80wk.x14k21rp.x17snn68.x6osk4m.x1porb0y > div:nth-child(2) > section > main > div > header > section > ul > li:nth-child(2) > a > span"))).title
-            #print(f'Followers: {followerCount}')
         except:
             systemBoarder(sys="error", msg="Could not find follower count")
 
         try:    
             systemBoarder(sys='SYSTEM', msg='Collecting following count...')
             followingCount = self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(3) a:nth-child(1) span:nth-child(1) span:nth-child(1)").text
-            #followingCount = wait(self.driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#mount_0_0_0l > div > div > div.x9f619.x1n2onr6.x1ja2u2z > div > div > div > div.x78zum5.xdt5ytf.x1t2pt76.x1n2onr6.x1ja2u2z.x10cihs4 > div.x9f619.xvbhtw8.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x1uhb9sk.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.x1q0g3np.xqjyukv.x1qjc9v5.x1oa3qoh.x1qughib > div.x1gryazu.xh8yej3.x10o80wk.x14k21rp.x17snn68.x6osk4m.x1porb0y > div:nth-child(2) > section > main > div > header > section > ul > li:nth-child(3) > a > span > span"))).text
-            #print(f'Following: {followingCount}')
         except:
             systemBoarder(sys='error', msg='Could not find following count')
 
@@ -212,8 +208,8 @@ class bot():
             systemBoarder(sys='error', msg='Could not get image url')
 
         try:
-            #self.get_your_followers()
-            #self.get_your_following()
+            self.get_your_followers()
+            self.get_your_following()
 
             with open('..\\reasources\\data\\user_followers', 'r') as f1:
                 followers = set(f1.read().splitlines())
@@ -264,8 +260,6 @@ class bot():
         except:
             systemBoarder(sys='error', msg='Error Printing...')
 
-
-
     def get_your_followers(self):
         try:#black magic
             systemBoarder(sys='SYSTEM', msg='Loading followers...')
@@ -299,13 +293,12 @@ class bot():
             IGuserName = "\n".join(names)
             #print(IGuserName)
 
-            with open("..\\reasources\\data\\user_followers", 'w') as file:
+            with open("..\\reasources\\data\\user\\user_followers", 'w') as file:
                 for name in names:
                     file.write(name + "\n")
 
         except:
             print("error")
-
 
     def get_your_following(self):
         systemBoarder(sys='SYSTEM', msg='Loading followers...')
@@ -339,7 +332,7 @@ class bot():
         IGuserName = "\n".join(names)
         #print(IGuserName)
 
-        with open("..\\reasources\\data\\user_following", 'w') as file:
+        with open("..\\reasources\\data\\user\\user_following", 'w') as file:
                 for name in names:
                     file.write(name + "\n")
         
@@ -359,7 +352,6 @@ class bot():
         
         systemBoarder(sys='SYSTEM', msg='Collecting data...')                        #print start sequence
 
-        
         try:
             systemBoarder(sys='SYSTEM', msg='Collecting post count...')
             postCount = self.driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > section:nth-child(1) > main:nth-child(1) > div:nth-child(1) > header:nth-child(1) > section:nth-child(2) > ul:nth-child(3) > li:nth-child(1) > span:nth-child(1) > span:nth-child(1)").text
@@ -370,16 +362,14 @@ class bot():
         try:
             systemBoarder(sys='SYSTEM', msg='Collecting follower count...')
             followerCount = self.driver.find_element(By.XPATH, "/html[1]/body[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/section[1]/main[1]/div[1]/header[1]/section[1]/ul[1]/li[2]/a[1]/span[1]/span[1]").text
-            #followerCount = wait(self.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#mount_0_0_0l > div > div > div.x9f619.x1n2onr6.x1ja2u2z > div > div > div > div.x78zum5.xdt5ytf.x1t2pt76.x1n2onr6.x1ja2u2z.x10cihs4 > div.x9f619.xvbhtw8.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x1uhb9sk.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.x1q0g3np.xqjyukv.x1qjc9v5.x1oa3qoh.x1qughib > div.x1gryazu.xh8yej3.x10o80wk.x14k21rp.x17snn68.x6osk4m.x1porb0y > div:nth-child(2) > section > main > div > header > section > ul > li:nth-child(2) > a > span"))).title
-            #print(f'Followers: {followerCount}')
+
         except:
             systemBoarder(sys="error", msg="Could not find follower count")
 
         try:    
             systemBoarder(sys='SYSTEM', msg='Collecting following count...')
             followingCount = self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(3) a:nth-child(1) span:nth-child(1) span:nth-child(1)").text
-            #followingCount = wait(self.driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#mount_0_0_0l > div > div > div.x9f619.x1n2onr6.x1ja2u2z > div > div > div > div.x78zum5.xdt5ytf.x1t2pt76.x1n2onr6.x1ja2u2z.x10cihs4 > div.x9f619.xvbhtw8.x78zum5.x168nmei.x13lgxp2.x5pf9jr.xo71vjh.x1uhb9sk.x1plvlek.xryxfnj.x1c4vz4f.x2lah0s.x1q0g3np.xqjyukv.x1qjc9v5.x1oa3qoh.x1qughib > div.x1gryazu.xh8yej3.x10o80wk.x14k21rp.x17snn68.x6osk4m.x1porb0y > div:nth-child(2) > section > main > div > header > section > ul > li:nth-child(3) > a > span > span"))).text
-            #print(f'Following: {followingCount}')
+
         except:
             systemBoarder(sys='error', msg='Could not find following count')
 
@@ -410,6 +400,32 @@ class bot():
         except:
             systemBoarder(sys="error", msg="Could not get profile link")
 
+        try:
+            self.get_target_followers(target=target)
+            self.get_target_following(target=target)
+
+            folderPath = f'..\\reasources\\data\\{target}'
+            with open(os.path.join(folderPath, f"{target}_followers"), 'r') as f1:
+                followers = set(f1.read().splitlines())
+
+            with open(os.path.join(folderPath, f"{target}_following"), 'r') as f2:
+                following = set(f2.read().splitlines()) 
+
+            not_following_user_back = following - followers
+            user_not_following_back = followers - following
+
+            systemBoarder(sys='system', msg='Calculating differences')
+
+            with open(os.path.join(folderPath, f"not_following_{target}_back"), 'w') as file:
+                for item in not_following_user_back:
+                    file.write(item + '\n')
+
+            with open('os.path.join(folderPath, f"{target}_not_following_back")', 'w') as file:
+                for item in user_not_following_back:
+                    file.write(item + '\n')
+
+        except:
+            systemBoarder(sys="error", msg="problem with followers and following")
 
         #OUT PUT
         try:
@@ -442,21 +458,102 @@ class bot():
         except:
             print(f'null')
 
+        try:
+            print(f'\n\tNot Following User Back\t\t\tUser Not Following Back')
+            print(f'\t{len(not_following_user_back)}\t\t\t{len(user_not_following_back)}')
+
+        except:
+            systemBoarder(sys='error', msg='Error Printing...')
+            
         return
     
     def get_target_followers(self, target):
         print("Loading target...")
-        self.driver.get(f"https://www.instagram.com/{target}/followers")        
-        return
+        try:#black magic
+            systemBoarder(sys='SYSTEM', msg='Loading followers...')
+            self.driver.get(f"https://www.instagram.com/{target}/followers")        #load followers pop up
+
+            systemBoarder(sys='SYSTEM', msg='Waiting...')
+            #scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))    #find the scroll bar
+            time.sleep(10)
+            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+            systemBoarder(sys='SYSTEM', msg='Scroll box found!')
+            last_ht, ht = 0, 1
+            while last_ht != ht:
+                systemBoarder(sys='SYSTEM', msg='Scrolling...')
+                last_ht = ht
+                time.sleep(5)
+                ht = self.driver.execute_script("""
+                                                arguments[0].scrollTo(0, arguments[0].scrollHeight);
+                                                return arguments[0].scrollHeight; """, scroll_box)
+                
+            systemBoarder(sys='SYSTEM', msg='Collection Completed!')
+            
+            links = scroll_box.find_elements(By.TAG_NAME, 'a')
+            time.sleep(2)
+            #print(links)
+            systemBoarder(sys='SYSTEM', msg='Parsing...')
+            names = [name.text for name in links if name.text != '']
+            systemBoarder(sys='SYSTEM', msg='Closing pop up') 
+            self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div.x1qjc9v5.x78zum5.xdt5ytf > div > div._ac7b._ac7d > div > button").click()
+
+            systemBoarder(sys='SYSTEM', msg='Black Magic Finished!') 
+            IGuserName = "\n".join(names)
+            #print(IGuserName)
+
+            folderPath = f'..\\reasources\\data\\{target}'
+            os.makedirs(folderPath, exist_ok=True)
+            with open(os.path.join(folderPath, f"{target}_followers"), 'w') as file:
+                for name in names:
+                    file.write(name + "\n")
+
+        except:
+            print("error")
     
     def get_target_following(self, target):
         print("Loading target...")
-        self.driver.get(f"https://www.instagram.com/{target}/followering") 
-        return
-    
 
+        try:#black magic
+            systemBoarder(sys='SYSTEM', msg='Loading followers...')
+            self.driver.get(f"https://www.instagram.com/{target}/following")         #load followers pop up
 
+            systemBoarder(sys='SYSTEM', msg='Waiting...')
+            time.sleep(10)
 
+            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+            systemBoarder(sys='SYSTEM', msg='Scroll box found!')
+
+            last_ht, ht = 0, 1
+            while last_ht != ht:
+                systemBoarder(sys='SYSTEM', msg='Scrolling...')
+                last_ht = ht
+                time.sleep(5)
+                ht = self.driver.execute_script("""
+                                                arguments[0].scrollTo(0, arguments[0].scrollHeight);
+                                                return arguments[0].scrollHeight; """, scroll_box)
+                
+            systemBoarder(sys='SYSTEM', msg='Collection Completed!')
+            
+            links = scroll_box.find_elements(By.TAG_NAME, 'a')
+            time.sleep(2)
+  
+            systemBoarder(sys='SYSTEM', msg='Parsing...')
+            names = [name.text for name in links if name.text != '']
+            systemBoarder(sys='SYSTEM', msg='Closing pop up') 
+            self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div.x1qjc9v5.x78zum5.xdt5ytf > div > div._ac7b._ac7d > div > button").click()
+
+            systemBoarder(sys='SYSTEM', msg='Black Magic Finished!') 
+            IGuserName = "\n".join(names)
+  
+
+            folderPath = f'..\\reasources\\data\\{target}'
+            os.makedirs(folderPath, exist_ok=True)
+            with open(os.path.join(folderPath, f"{target}_following"), 'w') as file:
+                for name in names:
+                    file.write(name + "\n")
+
+        except:
+            print("error")
 
     def quit(self):
             try:
