@@ -211,10 +211,10 @@ class bot():
             self.get_your_followers()
             self.get_your_following()
 
-            with open('..\\reasources\\data\\user_followers', 'r') as f1:
+            with open('..\\reasources\\data\\user\\user_followers.txt', 'r') as f1:
                 followers = set(f1.read().splitlines())
 
-            with open('..\\reasources\\data\\user_following', 'r') as f2:
+            with open('..\\reasources\\data\\user\\user_following.txt', 'r') as f2:
                 following = set(f2.read().splitlines()) 
 
             not_following_user_back = following - followers
@@ -222,11 +222,11 @@ class bot():
 
             systemBoarder(sys='system', msg='Calculating differences')
 
-            with open('..\\reasources\\data\\not_following_user_back', 'w') as file:
+            with open('..\\reasources\\data\\user\\not_following_user_back.txt', 'w') as file:
                 for item in not_following_user_back:
                     file.write(item + '\n')
 
-            with open('..\\reasources\\data\\user_not_following_back', 'w') as file:
+            with open('..\\reasources\\data\\user\\user_not_following_back.txt', 'w') as file:
                 for item in user_not_following_back:
                     file.write(item + '\n')
             
@@ -293,7 +293,7 @@ class bot():
             IGuserName = "\n".join(names)
             #print(IGuserName)
 
-            with open("..\\reasources\\data\\user\\user_followers", 'w') as file:
+            with open("..\\reasources\\data\\user\\user_followers.txt", 'w') as file:
                 for name in names:
                     file.write(name + "\n")
 
@@ -332,11 +332,16 @@ class bot():
         IGuserName = "\n".join(names)
         #print(IGuserName)
 
-        with open("..\\reasources\\data\\user\\user_following", 'w') as file:
+        with open("..\\reasources\\data\\user\\user_following.txt", 'w') as file:
                 for name in names:
                     file.write(name + "\n")
         
     
+    def get_user_posts(self):
+        return 
+    
+    def get_user_posts_likes(self):
+        return
     
 ### TARGET ACTIONS ###  
 
@@ -405,10 +410,10 @@ class bot():
             self.get_target_following(target=target)
 
             folderPath = f'..\\reasources\\data\\{target}'
-            with open(os.path.join(folderPath, f"{target}_followers"), 'r') as f1:
+            with open(os.path.join(folderPath, f"{target}_followers.txt"), 'r') as f1:
                 followers = set(f1.read().splitlines())
 
-            with open(os.path.join(folderPath, f"{target}_following"), 'r') as f2:
+            with open(os.path.join(folderPath, f"{target}_following.txt"), 'r') as f2:
                 following = set(f2.read().splitlines()) 
 
             not_following_user_back = following - followers
@@ -416,11 +421,11 @@ class bot():
 
             systemBoarder(sys='system', msg='Calculating differences')
 
-            with open(os.path.join(folderPath, f"not_following_{target}_back"), 'w') as file:
+            with open(os.path.join(folderPath, f"not_following_{target}_back.txt"), 'w') as file:
                 for item in not_following_user_back:
                     file.write(item + '\n')
 
-            with open('os.path.join(folderPath, f"{target}_not_following_back")', 'w') as file:
+            with open(os.path.join(folderPath, f"{target}_not_following_back.txt"), 'w') as file:
                 for item in user_not_following_back:
                     file.write(item + '\n')
 
@@ -464,19 +469,19 @@ class bot():
 
         except:
             systemBoarder(sys='error', msg='Error Printing...')
-            
+
         return
     
     def get_target_followers(self, target):
         print("Loading target...")
         try:#black magic
             systemBoarder(sys='SYSTEM', msg='Loading followers...')
-            self.driver.get(f"https://www.instagram.com/{target}/followers")        #load followers pop up
-
+            self.driver.get(f"https://www.instagram.com/{target}/followers/")        #load followers pop up
+        
             systemBoarder(sys='SYSTEM', msg='Waiting...')
-            #scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))    #find the scroll bar
             time.sleep(10)
-            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+        
+            scroll_box = self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div._aano")
             systemBoarder(sys='SYSTEM', msg='Scroll box found!')
             last_ht, ht = 0, 1
             while last_ht != ht:
@@ -503,7 +508,7 @@ class bot():
 
             folderPath = f'..\\reasources\\data\\{target}'
             os.makedirs(folderPath, exist_ok=True)
-            with open(os.path.join(folderPath, f"{target}_followers"), 'w') as file:
+            with open(os.path.join(folderPath, f"{target}_followers.txt"), 'w') as file:
                 for name in names:
                     file.write(name + "\n")
 
@@ -514,13 +519,13 @@ class bot():
         print("Loading target...")
 
         try:#black magic
-            systemBoarder(sys='SYSTEM', msg='Loading followers...')
-            self.driver.get(f"https://www.instagram.com/{target}/following")         #load followers pop up
-
+            systemBoarder(sys='SYSTEM', msg='Loading following...')
+            self.driver.get(f"https://www.instagram.com/{target}/following/")         #load followers pop up
+            
             systemBoarder(sys='SYSTEM', msg='Waiting...')
             time.sleep(10)
 
-            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+            scroll_box = self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div._aano")
             systemBoarder(sys='SYSTEM', msg='Scroll box found!')
 
             last_ht, ht = 0, 1
@@ -543,12 +548,12 @@ class bot():
             self.driver.find_element(By.CSS_SELECTOR, "body > div.x1n2onr6.xzkaem6 > div.x9f619.x1n2onr6.x1ja2u2z > div > div.x1uvtmcs.x4k7w5x.x1h91t0o.x1beo9mf.xaigb6o.x12ejxvf.x3igimt.xarpa2k.xedcshv.x1lytzrv.x1t2pt76.x7ja8zs.x1n2onr6.x1qrby5j.x1jfb8zj > div > div > div > div > div.x7r02ix.xf1ldfh.x131esax.xdajt7p.xxfnqb6.xb88tzc.xw2csxc.x1odjw0f.x5fp0pe > div > div > div.x1qjc9v5.x78zum5.xdt5ytf > div > div._ac7b._ac7d > div > button").click()
 
             systemBoarder(sys='SYSTEM', msg='Black Magic Finished!') 
-            IGuserName = "\n".join(names)
+            #IGuserName = "\n".join(names)
   
 
             folderPath = f'..\\reasources\\data\\{target}'
             os.makedirs(folderPath, exist_ok=True)
-            with open(os.path.join(folderPath, f"{target}_following"), 'w') as file:
+            with open(os.path.join(folderPath, f"{target}_following.txt"), 'w') as file:
                 for name in names:
                     file.write(name + "\n")
 
