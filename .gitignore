@@ -4,6 +4,10 @@ __pycache__/
 
 *.pkl
 
-*.txt
+#Ignore all text files:
+*.txt 
+#Except for the following:
+!requirements.txt
+!config.txt
 
 venv/ 

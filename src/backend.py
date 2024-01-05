@@ -16,6 +16,8 @@ import time
 import sys  
 import os
 
+from getpass import getpass
+
 class bot():
     def __init__(self) -> None: 
         try:
@@ -80,7 +82,8 @@ class bot():
 
             else:       
                 self.username = str(input(f"\nUsername: "))                                     #ask for username
-                self.password = str(input(f"Password: "))                                       #Ask for password
+                #self.password = str(input(f"Password: "))                                       #Ask for password
+                self.password = getpass(prompt="\nPassword: ")
                 print()
 
             try:                                                                                                                        #USERNAME 
@@ -116,10 +119,15 @@ class bot():
             except:
                 systemBoarder(sys="ERROR", msg="Could not find login or creds do not suffice")                                                                               #Print click failed (could not find or bad creds)
 
-            try:#Find icon that only appears when logged in to confirm login
-                wait(self.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > div:nth-child(1) > a:nth-child(1) > div:nth-child(1)")))
-                systemBoarder(sys='system', msg='LOGIN SEQUENCE SUCCESSFUL!')       #print login successful
-                break                                                               #break from loop
+            try:#Compare URL to determine login success
+                time.sleep(7)
+                # print(self.driver.current_url)
+                # print(self.driver.current_url[:len(f"https://www.instagram.com/accounts/")])
+                if "https://www.instagram.com/accounts/" == self.driver.current_url[:len(f"https://www.instagram.com/accounts/")]:
+                    systemBoarder(sys='system', msg='LOGIN SEQUENCE SUCCESSFUL!')       #print login successful
+                    break 
+                
+                #break                                                               #break from loop
             except:
                 systemBoarder(sys='error', msg='FAILED LOGIN SEQUENCE')             #print login failed
 
@@ -267,8 +275,8 @@ class bot():
 
             systemBoarder(sys='SYSTEM', msg='Waiting...')
             #scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))    #find the scroll bar
-            time.sleep(10)
-            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+            time.sleep(5)
+            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[6]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
             systemBoarder(sys='SYSTEM', msg='Scroll box found!')
             last_ht, ht = 0, 1
             while last_ht != ht:
@@ -306,8 +314,8 @@ class bot():
 
         systemBoarder(sys='SYSTEM', msg='Waiting...')
         #scroll_box = wait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")))    #find the scroll bar
-        time.sleep(10)
-        scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[4]")
+        time.sleep(5)
+        scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[6]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
         systemBoarder(sys='SYSTEM', msg='Scroll box found!')
         last_ht, ht = 0, 1
         while last_ht != ht:
@@ -341,6 +349,122 @@ class bot():
         return 
     
     def get_user_posts_likes(self):
+        try:
+            input("When ready hit enter...")
+            scroll_box = self.driver.find_element(By.XPATH, "/html/body/div[6]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+            systemBoarder(sys='SYSTEM', msg='Scroll box found!')
+            last_ht, ht = 0, 1
+            while last_ht != ht:
+                systemBoarder(sys='SYSTEM', msg='Scrolling...')
+                last_ht = ht
+                time.sleep(2)
+                ht = self.driver.execute_script("""
+                                                arguments[0].scrollTo(0, arguments[0].scrollHeight / 2);
+                                                return arguments[0].scrollHeight; """, scroll_box)
+                time.sleep(2)
+                ht = self.driver.execute_script("""
+                                                arguments[0].scrollTo(0, arguments[0].scrollHeight);
+                                                return arguments[0].scrollHeight; """, scroll_box)
+                
+
+            systemBoarder(sys='SYSTEM', msg='Collection Completed!')
+            
+            links = scroll_box.find_elements(By.TAG_NAME, 'a')
+ 
+            systemBoarder(sys='SYSTEM', msg='Parsing...')
+            names = [name.text for name in links if name.text != '']
+            systemBoarder(sys='SYSTEM', msg='Black Magic Finished!') 
+            
+            print("method 1:")
+            
+            for name in names:
+                print(name)
+            print(len(names))
+            
+        except:
+            print("failed method one")
+
+        try:
+            input("When ready hit enter...")
+            userid_element = self.driver.find_element(By.XPATH, "/html/body/div[7]/div[2]/div/div[2]/div[1]/div/div[2]/div/div/div/div/div[2]/div/div[3]/div")
+            time.sleep(2)
+
+            # here, you can see user list you want.
+            # you have to scroll down to download more data from instagram server.
+            # loop until last element with users table view height value.
+
+            users = []
+
+            height = self.driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/div/div").value_of_css_property("padding-top")
+            match = False
+            while match==False:
+                lastHeight = height
+
+                # step 1
+                elements = self.driver.find_elements(By.XPATH, "//*[@id]/div/a")
+
+                # step 2
+                for element in elements:
+                    if element.get_attribute('title') not in users:
+                        users.append(element.get_attribute('title'))
+
+                # step 3
+                self.driver.execute_script("return arguments[0].scrollIntoView();", elements[-1])
+                time.sleep(1)
+
+                # step 4
+                height = self.driver.find_element(By.XPATH, "/html/body/div[3]/div/div[2]/div/div").value_of_css_property("padding-top")
+                if lastHeight==height:
+                    match = True
+
+            print("method 2:")
+
+            print(users)
+            print(len(users))
+
+        except:
+            print("failed method 2")
+
+        try:
+            input("When ready hit enter...")
+            
+
+            elems = self.driver.find_elements(By.XPATH, "//a[@class='FPmhX notranslate TlrDj']")
+            print("Method 3")
+
+            users = []
+            for elem in elems:
+                users.append(elem.get_attribute('title'))
+                print('Title : ' +elem.get_attribute('title'))
+
+            print(len(users))
+        except:
+            print("Method 3 failed")
+
+        try:
+            input("hit enter to continue...")
+            users = []
+            pb = self.driver.find_element(By.XPATH, "//div[@role = 'dialog']/div[2]/div[1]/div[1]").value_of_css_property("padding-bottom")
+            match = False
+            while match==False:
+                lastHeight = pb
+
+                # step 1
+                elements = self.driver.find_elements(By.XPATH, "//*[@id]/div/a")
+                # step 2
+                for element in elements:
+                    if element.get_attribute('title') not in users:
+                        users.append(element.get_attribute('title'))
+                # step 3
+                self.driver.execute_script("return arguments[0].scrollIntoView();", elements[-1])
+                time.sleep(1)
+                # step 4
+                pb = self.driver.find_element(By.XPATH, "//div[@role = 'dialog']/div[2]/div[1]/div[1]").value_of_css_property("padding-bottom")
+                if lastHeight==pb or len(users) >= 1500:
+                    match = True
+        except:
+            print("Method 4 failed")
+
         return
     
 ### TARGET ACTIONS ###  

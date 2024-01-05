@@ -50,7 +50,7 @@ while (option := options()):
         if option == '1':
             myBot.get_your_info()
         elif option == '2':
-            myBot.get_your_followers()
+            myBot.get_user_posts_likes()
         elif option == '3':
             myBot.get_your_following()
     elif int(option) >= 4 and int(option) < 7:

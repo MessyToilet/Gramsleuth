@@ -78,7 +78,7 @@ def options() -> str:
         print(f'{numberBoarder(7)} Save to file', end='\t')
         print(f'{numberBoarder(10)} Quit')
 
-        print(f'{numberBoarder(2)} Get user followers', end='\t\t')
+        print(f'{numberBoarder(2)} Get user posts likes', end='\t\t')
         print(f'{numberBoarder(5)} Get target followers', end='\t')
         print(f'{numberBoarder(8)} Settings') #clear history, color, windowed/window-less
 
