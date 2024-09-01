@@ -2,6 +2,12 @@ import shutil
 from colorama import Fore, Style
 import os
 
+def clear_screen() -> None:
+    if os.name == "nt":
+        os.system("cls")
+    elif os.name == "posix":
+        os.system("clear")
+
 def printLogo(color:str = 'white'):
     supportedColors = ["BLACK", 
                        "RED", 
@@ -39,7 +45,7 @@ def printLogo(color:str = 'white'):
     lines = logo.split('\n')
     max_length = max(len(line) for line in lines)
     centered_lines = [(line.center(terminal_size.columns, ' ') if len(line.strip()) > 0 else ' ' * terminal_size.columns) for line in lines]
-    os.system("cls")
+    clear_screen()
     print('\n'.join(centered_lines))
     
 
@@ -92,3 +98,4 @@ def options() -> str:
                 systemBoarder(sys='ERORR', msg='Bad Args')  #Do i need this?
         except:
             systemBoarder(sys='ERORR', msg='Bad Args')
+
