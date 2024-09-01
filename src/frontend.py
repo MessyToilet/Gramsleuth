@@ -54,25 +54,21 @@ def systemBoarder(sys:str, msg:str) -> str: #MAY CAUSE PROBLEMS!! (COULD CAUSE P
         print(f'{Fore.YELLOW}[{Fore.BLUE}{sys.upper()}{Fore.YELLOW}]{Fore.RESET} {msg}')
    
     elif sys.upper() == "USER":
-        return(f'\n{Fore.YELLOW}[{Fore.CYAN}{sys.upper()}{Fore.YELLOW}]{Fore.RESET}   {msg}')
+        return(f'\n{Fore.YELLOW}[{Fore.CYAN}{sys.upper()}{Fore.YELLOW}]{Fore.RESET} {msg}')
         
+
+MENU = f"""
+[    ] {numberBoarder(1)}  Get user info         {numberBoarder(6)}  Get target info         {numberBoarder(11)}  Load file
+[    ] {numberBoarder(2)}  Get user network      {numberBoarder(7)}  Get target network      {numberBoarder(12)}  Save to file
+[    ] {numberBoarder(3)}  Get user follows      {numberBoarder(8)}  Get target follows      {numberBoarder(13)}  Settings
+[    ] {numberBoarder(4)}  Get user likes        {numberBoarder(9)}  Get target likes        {numberBoarder(14)}  Help
+[    ] {numberBoarder(5)}  Get user comments     {numberBoarder(10)} Get target comments     {numberBoarder(15)}  Quit (10)
+ """
 
 def options() -> str:
     while True:
-        '''
-        print(f'\n{numberBoarder(1)} Get user info')
-        print(f'{numberBoarder(2)} Get user followers')
-        print(f'{numberBoarder(3)} Get user following')
+        # print(MENU)
 
-        print(f'\n{numberBoarder(4)} Get target info')
-        print(f'{numberBoarder(5)} Get target followers')
-        print(f'{numberBoarder(6)} Get target following')
-
-        print(f'\n{numberBoarder(7)} Save to file')
-        print(f'{numberBoarder(8)} Settings') #clear history, color, windowed/window-less
-        print(f'{numberBoarder(9)} Help') 
-        print(f'{numberBoarder(10)} Quit')
-        '''
         print(f'\n{numberBoarder(1)} Get user info', end='\t\t')
         print(f'{numberBoarder(4)} Get target info', end='\t\t')
         print(f'{numberBoarder(7)} Save to file', end='\t')

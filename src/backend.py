@@ -45,8 +45,10 @@ class bot():
 
         #START WHILE LOOP FOR FAILED LOGIN
         while True:                                                                                 #until login successful
-            userInput = str(input(f'\nUse a saved login? (y/n/q): '))
+            userInput = str(input(f'\nUse a saved login? (y/n/q/f): '))
             userInput = userInput.upper()
+            if userInput == 'f':
+                break
             if userInput == 'Y':                                                                    #Ask to use saved login
                 print()
                 try:
